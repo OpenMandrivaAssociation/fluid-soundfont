@@ -2,7 +2,7 @@
 
 Name:           fluid-soundfont
 Version:        3.1
-Release:        %mkrel 1
+Release:        %mkrel 2
 Summary:        Pro-quality GM/GS soundfont
 Group:          Sound
 License:        MIT
@@ -19,6 +19,7 @@ URL:            http://www.hammersound.com/cgi-bin/soundlink.pl?action=view_cate
 Source0:        http://ftp.de.debian.org/debian/pool/main/f/%{name}/%{name}_%{version}.orig.tar.gz
 # Some information about the soundfont that can be found in the Hammersound archive:
 Source1:        Fluid_R3_Readme.pdf
+Source2:	timidity-fluid.cfg
 BuildRoot:      %{_tmppath}/%{name}-%{version}-buildroot
 BuildArch:      noarch
 BuildRequires:  soundfont-utils
@@ -71,12 +72,14 @@ Provides:       soundfont2
 This package contains instruments belonging to General Midi's General Standard
 (GS) Extension in soundfont 2.0 (.sf2) format.
 
-%package lite-patches
+%package -n timidity-patch-fluid
 Summary:        Pro-quality General Midi soundfont in GUS patch format
 Group:          Sound
 Requires:       %{name}-common = %{version}-%{release}
+Obsoletes:	fluid-soundfont-lite-patches
+Provides:	fluid-soundfont-lite-patches
 
-%description lite-patches
+%description -n timidity-patch-fluid
 %common_description
 
 This package contains Fluid General Midi (GM) soundfont in Gravis Ultrasound
@@ -97,12 +100,13 @@ for bank in GM-B{8,9,16} Standard{1,2,3,4,5,6,7} Room{1,2,3,4,5,6,7} Power{1,2,3
    rm -fr *$bank*
 done
 
-cat FluidR3_GM.cfg FluidR3_GS.cfg > FluidR3.cfg
+echo dir /usr/share/timidity/fluid > FluidR3.cfg
+cat FluidR3_GM.cfg FluidR3_GS.cfg >> FluidR3.cfg
 
 # The gus patches get used by a lot of different programs and some need the
 # path to the patches to be absolute
-sed -i 's|FluidR3_GM-|%{_datadir}/soundfonts/%{name}-lite-patches/FluidR3_GM-|g' FluidR3.cfg
-sed -i 's|FluidR3_GS-|%{_datadir}/soundfonts/%{name}-lite-patches/FluidR3_GS-|g' FluidR3.cfg
+#sed -i 's|FluidR3_GM-|%{_datadir}/soundfonts/%{name}-lite-patches/FluidR3_GM-|g' FluidR3.cfg
+#sed -i 's|FluidR3_GS-|%{_datadir}/soundfonts/%{name}-lite-patches/FluidR3_GS-|g' FluidR3.cfg
 
 %install
 rm -rf %{buildroot}
@@ -116,26 +120,27 @@ ln -s FluidR3_GM.sf2 %{buildroot}%{_datadir}/soundfonts/default.sf2
 
 # Gus patches:
 mkdir -p %{buildroot}%{_sysconfdir}
-mkdir -p %{buildroot}%{_datadir}/soundfonts/%{name}-lite-patches
-cp -a FluidR3_GM-* %{buildroot}%{_datadir}/soundfonts/%{name}-lite-patches
-cp -a FluidR3_GS-* %{buildroot}%{_datadir}/soundfonts/%{name}-lite-patches
-mkdir -p %{buildroot}%{_sysconfdir}/timidity
-install -p -m 644 FluidR3.cfg %{buildroot}%{_sysconfdir}/timidity/FluidR3.cfg
+mkdir -p %{buildroot}%{_datadir}/timidity/fluid
+cp -a FluidR3_GM-* %{buildroot}%{_datadir}/timidity/fluid
+cp -a FluidR3_GS-* %{buildroot}%{_datadir}/timidity/fluid
+mkdir -p %{buildroot}%{_sysconfdir}/timidity/fluid
+install -p -m 644 FluidR3.cfg %{buildroot}%{_sysconfdir}/timidity/fluid/FluidR3.cfg
+install -m644 %{SOURCE2} -D %{buildroot}%{_sysconfdir}/timidity/timidity-fluid.cfg
 
 
 %clean
 rm -rf %{buildroot}
 
-%post lite-patches
-%{_sbindir}/update-alternatives --install %{_sysconfdir}/timidity/timidity.cfg timidity.cfg %{_sysconfdir}/timidity/FluidR3.cfg 30
+%post -n timidity-patch-fluid
+%{_sbindir}/update-alternatives --install %{_sysconfdir}/timidity/timidity.cfg timidity.cfg %{_sysconfdir}/timidity/timidity-fluid.cfg 40
 
-%postun lite-patches
+%postun -n timidity-patch-fluid
 if [ "$1" = "0" ]; then
-  %{_sbindir}/update-alternatives --remove timidity.cfg %{_sysconfdir}/timidity/FluidR3.cfg
+  %{_sbindir}/update-alternatives --remove timidity.cfg %{_sysconfdir}/timidity/timidity-fluid.cfg
 fi
 
 %triggerpostun -- TiMidity++ <= 2.13.2-1mdk
-%{_sbindir}/update-alternatives --install %{_sysconfdir}/timidity/timidity.cfg timidity.cfg %{_sysconfdir}/timidity/FluidR3.cfg 30
+%{_sbindir}/update-alternatives --install %{_sysconfdir}/timidity/timidity.cfg timidity.cfg %{_sysconfdir}/timidity/timidity-fluid.cfg 40
 
 
 %files common
@@ -152,8 +157,9 @@ fi
 %defattr(-,root,root,-)
 %{_datadir}/soundfonts/FluidR3_GS.sf2
 
-%files lite-patches
+%files -n timidity-patch-fluid
 %defattr(-,root,root,-)
-%config %{_sysconfdir}/timidity/FluidR3.cfg
-%{_datadir}/soundfonts/%{name}-lite-patches/
+%config %{_sysconfdir}/timidity/fluid/FluidR3.cfg
+%config %{_sysconfdir}/timidity/timidity-fluid.cfg
+%{_datadir}/timidity/fluid/
 
