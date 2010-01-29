@@ -2,7 +2,7 @@
 
 Name:           fluid-soundfont
 Version:        3.1
-Release:        %mkrel 2
+Release:        %mkrel 3
 Summary:        Pro-quality GM/GS soundfont
 Group:          Sound
 License:        MIT
@@ -37,8 +37,6 @@ of the GM presets.
 %package common
 Summary:        Common files for FluidR3 soundfont
 Group:          Sound
-Provides:	timidity-instruments = %{patch_pkg_version}
-Obsoletes:	timidity-instruments
 
 %description common
 %common_description
@@ -78,6 +76,8 @@ Group:          Sound
 Requires:       %{name}-common = %{version}-%{release}
 Obsoletes:	fluid-soundfont-lite-patches
 Provides:	fluid-soundfont-lite-patches
+Provides:	timidity-instruments = %{patch_pkg_version}
+Obsoletes:	timidity-instruments
 
 %description -n timidity-patch-fluid
 %common_description
