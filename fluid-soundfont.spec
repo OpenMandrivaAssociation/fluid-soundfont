@@ -2,7 +2,7 @@
 
 Name:           fluid-soundfont
 Version:        3.1
-Release:        %mkrel 3
+Release:        %mkrel 4
 Summary:        Pro-quality GM/GS soundfont
 Group:          Sound
 License:        MIT
