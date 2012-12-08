@@ -163,3 +163,24 @@ fi
 %config %{_sysconfdir}/timidity/timidity-fluid.cfg
 %{_datadir}/timidity/fluid/
 
+
+
+%changelog
+* Sun Dec 05 2010 Oden Eriksson <oeriksson@mandriva.com> 3.1-4mdv2011.0
++ Revision: 610714
+- rebuild
+
+* Fri Jan 29 2010 Emmanuel Andry <eandry@mandriva.org> 3.1-3mdv2010.1
++ Revision: 498051
+- move provides timidity-instruments in the right subpackage
+
+* Fri Jan 29 2010 Emmanuel Andry <eandry@mandriva.org> 3.1-2mdv2010.1
++ Revision: 497859
+- modify packages to be consistent with other timidity fonts packages
+- rename fluid-soundfont-lite to timidity-fluid
+
+* Thu Jan 28 2010 Emmanuel Andry <eandry@mandriva.org> 3.1-1mdv2010.1
++ Revision: 497794
+- import fluid-soundfont
+
+
