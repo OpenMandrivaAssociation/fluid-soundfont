@@ -1,14 +1,12 @@
 %define patch_pkg_version 2
 
-Name:           fluid-soundfont
-Version:        3.1
-Release:        %mkrel 4
-Summary:        Pro-quality GM/GS soundfont
-Group:          Sound
-License:        MIT
-# The original URL (http://www.powermage.com/fluid) seems dead. Therefore we point
-# to the Hammersound archives:
-URL:            http://www.hammersound.com/cgi-bin/soundlink.pl?action=view_category&category=Collections&ListStart=0&ListLength=20
+Summary:	Pro-quality GM/GS soundfont
+Name:		fluid-soundfont
+Version:	3.1
+Release:	4
+Group:		Sound
+License:	MIT
+Url:		http://www.hammersound.com/cgi-bin/soundlink.pl?action=view_category&category=Collections&ListStart=0&ListLength=20
 # The Hammersound source gives us a soundfont in a linux-unfriendly .sfArk format. 
 # In order to convert this to a linux-friendly .sf2 format one needs to use a 
 # non-free utility sfarkxtc from 
@@ -16,14 +14,12 @@ URL:            http://www.hammersound.com/cgi-bin/soundlink.pl?action=view_cate
 # This page explains how this conversion is done:
 #    http://vsr.informatik.tu-chemnitz.de/staff/jan/nted/doc/ch01s46.html
 # Debian folks already did this and we will borrow their source tarball:
-Source0:        http://ftp.de.debian.org/debian/pool/main/f/%{name}/%{name}_%{version}.orig.tar.gz
+Source0:	http://ftp.de.debian.org/debian/pool/main/f/%{name}/%{name}_%{version}.orig.tar.gz
 # Some information about the soundfont that can be found in the Hammersound archive:
-Source1:        Fluid_R3_Readme.pdf
+Source1:	Fluid_R3_Readme.pdf
 Source2:	timidity-fluid.cfg
-BuildRoot:      %{_tmppath}/%{name}-%{version}-buildroot
 BuildArch:      noarch
 BuildRequires:  soundfont-utils
-
 
 %define common_description \
 FluidR3 is the third release of Frank Wen's pro-quality GM/GS soundfont.\
@@ -109,8 +105,6 @@ cat FluidR3_GM.cfg FluidR3_GS.cfg >> FluidR3.cfg
 #sed -i 's|FluidR3_GS-|%{_datadir}/soundfonts/%{name}-lite-patches/FluidR3_GS-|g' FluidR3.cfg
 
 %install
-rm -rf %{buildroot}
-
 # The actual soundfonts:
 mkdir -p %{buildroot}%{_datadir}/soundfonts
 install -p -m 644 FluidR3_GM.sf2 %{buildroot}%{_datadir}/soundfonts
@@ -127,10 +121,6 @@ mkdir -p %{buildroot}%{_sysconfdir}/timidity/fluid
 install -p -m 644 FluidR3.cfg %{buildroot}%{_sysconfdir}/timidity/fluid/FluidR3.cfg
 install -m644 %{SOURCE2} -D %{buildroot}%{_sysconfdir}/timidity/timidity-fluid.cfg
 
-
-%clean
-rm -rf %{buildroot}
-
 %post -n timidity-patch-fluid
 %{_sbindir}/update-alternatives --install %{_sysconfdir}/timidity/timidity.cfg timidity.cfg %{_sysconfdir}/timidity/timidity-fluid.cfg 40
 
@@ -142,45 +132,19 @@ fi
 %triggerpostun -- TiMidity++ <= 2.13.2-1mdk
 %{_sbindir}/update-alternatives --install %{_sysconfdir}/timidity/timidity.cfg timidity.cfg %{_sysconfdir}/timidity/timidity-fluid.cfg 40
 
-
 %files common
-%defattr(-,root,root,-)
 %doc COPYING README *Readme*
 %dir %{_datadir}/soundfonts/
 
 %files gm
-%defattr(-,root,root,-)
 %{_datadir}/soundfonts/FluidR3_GM.sf2
 %{_datadir}/soundfonts/default.sf2
 
 %files gs
-%defattr(-,root,root,-)
 %{_datadir}/soundfonts/FluidR3_GS.sf2
 
 %files -n timidity-patch-fluid
-%defattr(-,root,root,-)
 %config %{_sysconfdir}/timidity/fluid/FluidR3.cfg
 %config %{_sysconfdir}/timidity/timidity-fluid.cfg
 %{_datadir}/timidity/fluid/
-
-
-
-%changelog
-* Sun Dec 05 2010 Oden Eriksson <oeriksson@mandriva.com> 3.1-4mdv2011.0
-+ Revision: 610714
-- rebuild
-
-* Fri Jan 29 2010 Emmanuel Andry <eandry@mandriva.org> 3.1-3mdv2010.1
-+ Revision: 498051
-- move provides timidity-instruments in the right subpackage
-
-* Fri Jan 29 2010 Emmanuel Andry <eandry@mandriva.org> 3.1-2mdv2010.1
-+ Revision: 497859
-- modify packages to be consistent with other timidity fonts packages
-- rename fluid-soundfont-lite to timidity-fluid
-
-* Thu Jan 28 2010 Emmanuel Andry <eandry@mandriva.org> 3.1-1mdv2010.1
-+ Revision: 497794
-- import fluid-soundfont
-
 
