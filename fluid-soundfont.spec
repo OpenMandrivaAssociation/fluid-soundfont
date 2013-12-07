@@ -3,7 +3,7 @@
 Summary:	Pro-quality GM/GS soundfont
 Name:		fluid-soundfont
 Version:	3.1
-Release:	6
+Release:	7
 Group:		Sound
 License:	MIT
 Url:		http://www.hammersound.com/cgi-bin/soundlink.pl?action=view_category&category=Collections&ListStart=0&ListLength=20
