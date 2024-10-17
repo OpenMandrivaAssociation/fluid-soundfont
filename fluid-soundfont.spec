@@ -6,7 +6,7 @@ Version:	3.1
 Release:	15
 Group:		Sound
 License:	MIT
-Url:		http://www.hammersound.com/cgi-bin/soundlink.pl?action=view_category&category=Collections&ListStart=0&ListLength=20
+Url:		https://www.hammersound.com/cgi-bin/soundlink.pl?action=view_category&category=Collections&ListStart=0&ListLength=20
 # The Hammersound source gives us a soundfont in a linux-unfriendly .sfArk format. 
 # In order to convert this to a linux-friendly .sf2 format one needs to use a 
 # non-free utility sfarkxtc from 
