@@ -15,6 +15,8 @@ Url:		https://www.hammersound.com/cgi-bin/soundlink.pl?action=view_category&cate
 #    http://vsr.informatik.tu-chemnitz.de/staff/jan/nted/doc/ch01s46.html
 # Debian folks already did this and we will borrow their source tarball:
 Source0:	http://ftp.de.debian.org/debian/pool/main/f/%{name}/%{name}_%{version}.orig.tar.gz
+# Alternative source:
+# https://github.com/pianobooster/fluid-soundfont
 # Some information about the soundfont that can be found in the Hammersound archive:
 Source1:	Fluid_R3_Readme.pdf
 Source2:	timidity-fluid.cfg
